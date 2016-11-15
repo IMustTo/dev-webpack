@@ -27,7 +27,8 @@
     "vue-loader": "^9.9.1",
     "vue-style-loader": "^1.0.0",
     "webpack": "^1.13.3",
-    "webpack-dev-server": "^1.16.2"
+    "webpack-dev-server": "^1.16.2",
+    "webpack-merge": "^0.16.0"
   },
   "scripts": {
     "dev": "webpack-dev-server --hot --inline",

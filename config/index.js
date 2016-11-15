@@ -1,5 +1,6 @@
-const entry = require('./entry');
+const { entry, pages } = require('./entry');
 
 module.exports = {
   entry,
+  pages,
 };

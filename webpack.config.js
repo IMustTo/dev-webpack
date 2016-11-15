@@ -1,6 +1,7 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlwebpackPlugin = require('html-webpack-plugin');
-const { entry } = require('./config');
+const { entry, pages } = require('./config');
 
 const ROOT_PATH = path.resolve(__dirname);
 const APP_PATH = path.resolve(ROOT_PATH, 'src');
@@ -10,7 +11,7 @@ module.exports = {
   entry: entry,
   output: {
     path: BUILD_PATH,
-    filename: 'bundle.js',
+    filename: '[name].[chunkhash].js',
   },
   module: {
     preLoaders: [
@@ -61,10 +62,37 @@ module.exports = {
   },
 
   plugins: [
-    // 自动生成一个html文件
-    new HtmlwebpackPlugin({
-      title: 'Hello World app',
+    // split vendor js into its own file
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: function (module, count) {
+        // any required modules inside node_modules are extracted to vendor
+        return (
+          module.resource &&
+          /\.js$/.test(module.resource) &&
+          module.resource.indexOf(
+            path.join(__dirname, 'node_modules')
+          ) === 0
+        )
+      }
     }),
+
+    // extract webpack runtime and module manifest to its own file in order to
+    // prevent vendor hash from being updated whenever app bundle is updated
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'manifest',
+      chunks: ['vendor']
+    }),
+
+    // 自动生成一个html文件
+    // new HtmlwebpackPlugin({
+    //   template: path.resolve(__dirname, `src/demo/index.html`),
+    //   filename: 'index.html',
+    //   // chunks这个参数告诉插件要引用entry里面的哪几个入口
+    //   chunks: ['manifest', 'vendor', 'demo'],
+    //   // 要把script插入到标签里
+    //   inject: 'body',
+    // }),
 
     // 注册全局变量
     /*
@@ -74,7 +102,7 @@ module.exports = {
         "window.jQuery": "jquery"
       }),
     */
-  ],
+  ].concat(pages),
 
   devServer: {
     historyApiFallback: true,
