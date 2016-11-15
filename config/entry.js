@@ -24,6 +24,6 @@ entryArr.forEach((item) => {
 });
 
 module.exports = {
-  pages,
   entry,
+  pages,
 };
