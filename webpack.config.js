@@ -2,7 +2,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlwebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 const { entry, plugins } = require('./config');
 
@@ -70,21 +69,7 @@ module.exports = {
     ],
   },
 
-  vue: {
-    postcss: [
-      require('autoprefixer')({
-        browsers: ['last 2 versions']
-      })
-    ]
-  },
-
-  eslint: {
-    formatter: require('eslint-friendly-formatter')
-  },
-
-  plugins: [
-    new CleanWebpackPlugin(['dist']),
-  ].concat(plugins),
+  plugins,
 
   devServer: {
     historyApiFallback: true,
@@ -100,4 +85,15 @@ module.exports = {
   },
 
   devtool: 'eval-source-map',
+
+  eslint: {
+    formatter: require('eslint-friendly-formatter')
+  },
+  vue: {
+    postcss: [
+      require('autoprefixer')({
+        browsers: ['last 2 version', 'safari 5', 'opera 12.1', 'ios 6', 'android 4', '> 10%']
+      })
+    ],
+  },
 };

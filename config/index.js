@@ -12,6 +12,7 @@ const plugins = [];
 // 如果有参数，表示是单一模块
 
 entryArr.forEach((item) => {
+  const vendor = `${item}.vendor`;
   entry[item] = path.resolve(__dirname, `../src/pages/${item}/main.js`);
 
   plugins.push(
@@ -19,7 +20,7 @@ entryArr.forEach((item) => {
       template: path.resolve(__dirname, `../src/pages/${item}/index.html`),
       filename: `pages/${item}/index.html`,
       // chunks这个参数告诉插件要引用entry里面的哪几个入口
-      chunks: [`${item}.vendor`, item],
+      chunks: [vendor, item],
       // 要把script插入到标签里
       inject: 'body',
     })
@@ -27,8 +28,8 @@ entryArr.forEach((item) => {
 
   plugins.push(
     new webpack.optimize.CommonsChunkPlugin({
-      name: `${item}.vendor`,
-      filename: `assets/libs/${item}.vendor.js`,
+      name: vendor,
+      filename: `assets/libs/${vendor}.js`,
       minChunks: function(module) {
         return (
           module.resource &&
