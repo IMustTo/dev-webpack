@@ -6,7 +6,6 @@ const path = require('path');
 const ora = require('ora');
 const webpack = require('webpack');
 
-// const webpackConfig = require('./webpack.prod.config');
 const webpackConfig = require('./webpack.prod.config');
 
 const spinner = ora('building for production...');
