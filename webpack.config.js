@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const HtmlwebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-const { entry, pages } = require('./config');
+const { entry, plugins } = require('./config');
 
 const ROOT_PATH = path.resolve(__dirname);
 const APP_PATH = path.resolve(ROOT_PATH, 'src');
@@ -84,7 +84,7 @@ module.exports = {
 
   plugins: [
     new CleanWebpackPlugin(['dist']),
-  ].concat(pages),
+  ].concat(plugins),
 
   devServer: {
     historyApiFallback: true,
