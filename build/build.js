@@ -1,14 +1,19 @@
 /* eslint-disable */
+require('shelljs/global');
+env.NODE_ENV = 'production';
+
 const path = require('path');
 const ora = require('ora');
 const webpack = require('webpack');
-process.env.NODE_ENV = 'production';
 
 // const webpackConfig = require('./webpack.prod.config');
 const webpackConfig = require('./webpack.prod.config');
 
 const spinner = ora('building for production...');
 spinner.start();
+
+rm('-rf', path.resolve(__dirname, '../dist'));
+// cp('-R', 'static/*', assetsPath)
 
 webpack(webpackConfig, (err, stats) => {
   spinner.stop();
