@@ -2,6 +2,8 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlwebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+
 const { entry, pages } = require('./config');
 
 const ROOT_PATH = path.resolve(__dirname);
@@ -12,7 +14,16 @@ module.exports = {
   entry: entry,
   output: {
     path: BUILD_PATH,
-    filename: '[name].[chunkhash].js',
+    filename: 'assets/js/[name].js',
+    chunkFilename: 'assets/js/[id].js'
+  },
+  resolve: {
+    extensions: ['', '.js', '.vue'],
+    fallback: [path.join(__dirname, 'node_modules')],
+    alias: {
+      'assets': path.resolve(APP_PATH, 'assets'),
+      'components': path.resolve(APP_PATH, 'components')
+    }
   },
   module: {
     preLoaders: [
@@ -30,6 +41,10 @@ module.exports = {
       }
     ],
     loaders: [
+      {
+        test: /\.vue$/,
+        loader: 'vue'
+      },
       {
         test: /\.css$/,
         loaders: ['style', 'css'],
@@ -52,57 +67,23 @@ module.exports = {
           presets: ['es2015'],
         }
       },
-      {
-        test: /\.vue$/,
-        loader: 'vue',
-      },
     ],
   },
+
+  vue: {
+    postcss: [
+      require('autoprefixer')({
+        browsers: ['last 2 versions']
+      })
+    ]
+  },
+
   eslint: {
     formatter: require('eslint-friendly-formatter')
   },
 
   plugins: [
-    // split vendor js into its own file
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: function (module, count) {
-        // any required modules inside node_modules are extracted to vendor
-        return (
-          module.resource &&
-          /\.js$/.test(module.resource) &&
-          module.resource.indexOf(
-            path.join(__dirname, 'node_modules')
-          ) === 0
-        )
-      }
-    }),
-
-    // extract webpack runtime and module manifest to its own file in order to
-    // prevent vendor hash from being updated whenever app bundle is updated
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest',
-      chunks: ['vendor']
-    }),
-
-    // 自动生成一个html文件
-    // new HtmlwebpackPlugin({
-    //   template: path.resolve(__dirname, `src/demo/index.html`),
-    //   filename: 'index.html',
-    //   // chunks这个参数告诉插件要引用entry里面的哪几个入口
-    //   chunks: ['manifest', 'vendor', 'demo'],
-    //   // 要把script插入到标签里
-    //   inject: 'body',
-    // }),
-
-    // 注册全局变量
-    /*
-      new webpack.ProvidePlugin({
-        $: "jquery",
-        jQuery: "jquery",
-        "window.jQuery": "jquery"
-      }),
-    */
+    new CleanWebpackPlugin(['dist']),
   ].concat(pages),
 
   devServer: {
