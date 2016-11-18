@@ -19,5 +19,5 @@ module.exports = merge(baseConfig, {
     // },
   },
 
-  devtool: 'eval-source-map',
+  devtool: 'cheap-module-eval-source-map',
 });
