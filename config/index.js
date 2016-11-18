@@ -3,8 +3,14 @@ const path = require('path');
 const fs = require('fs');
 const webpack = require('webpack');
 const HtmlwebpackPlugin = require('html-webpack-plugin');
+const argv = require('yargs').argv;
 
-const entryArr = fs.readdirSync(path.resolve(__dirname, '../src/pages'));
+let entryArr = fs.readdirSync(path.resolve(__dirname, '../src/pages'));
+
+// 单页面启动传参 eg: npm run dev -- --page=demo
+if (argv.page) {
+  entryArr = [argv.page];
+}
 
 const entry = Object.create(null);
 const plugins = [];
