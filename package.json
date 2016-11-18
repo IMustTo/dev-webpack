@@ -27,6 +27,7 @@
     "html-webpack-plugin": "^2.24.1",
     "json-loader": "^0.5.4",
     "opn": "^4.0.2",
+    "ora": "^0.3.0",
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
@@ -39,8 +40,8 @@
     "yargs": "^6.4.0"
   },
   "scripts": {
-    "dev": "webpack-dev-server --hot --inline",
-    "build": "webpack --progress --profile --colors --config webpack.production.config.js"
+    "dev": "webpack-dev-server --hot --inline --config build/webpack.dev.config.js",
+    "build": "node build/build.js"
   },
   "keywords": [
     "webpack",
