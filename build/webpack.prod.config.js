@@ -8,7 +8,7 @@ const baseConfig = require('./webpack.config');
 module.exports = merge(baseConfig, {
   devtool: 'cheap-module-source-map',
 
-  plugins: [
+  // plugins: [
 
-  ],
+  // ],
 });
